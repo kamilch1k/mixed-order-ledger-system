@@ -1,0 +1,7 @@
+{
+  "id": "event-guid",
+  "type": "OrderCreated",
+  "orderId": "order-guid",
+  "occurredAtUtc": "2026-06-17T12:00:00Z",
+  "schemaVersion": "v1"
+}
