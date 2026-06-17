@@ -42,6 +42,19 @@ public sealed class OrderApiTests : IClassFixture<OrderLedgerApiFactory>
     }
 
     [Fact]
+    public async Task ListOrdersReturnsCreatedOrders()
+    {
+        var first = await CreateOrderAsync("customer-list-a", "SKU-LIST-A");
+        var second = await CreateOrderAsync("customer-list-b", "SKU-LIST-B");
+
+        var list = await _client.GetFromJsonAsync<OrderListResponse>("/api/orders", JsonOptions);
+
+        Assert.NotNull(list);
+        Assert.Contains(list.Items, item => item.Id == first.Id && item.CustomerId == "customer-list-a");
+        Assert.Contains(list.Items, item => item.Id == second.Id && item.CustomerId == "customer-list-b");
+    }
+
+    [Fact]
     public async Task IdempotencyKeyReturnsExistingOrder()
     {
         var request = new CreateOrderRequest(
@@ -72,5 +85,20 @@ public sealed class OrderApiTests : IClassFixture<OrderLedgerApiFactory>
         var outbox = await _client.GetFromJsonAsync<OutboxResponse>("/api/outbox", JsonOptions);
         Assert.NotNull(outbox);
         Assert.Single(outbox.Items, item => item.OrderId == firstOrder.Id);
+    }
+
+    private async Task<OrderResponse> CreateOrderAsync(string customerId, string sku)
+    {
+        var request = new CreateOrderRequest(
+            customerId,
+            [new CreateOrderItemRequest(sku, 1, 25m)],
+            "USD");
+
+        var response = await _client.PostAsJsonAsync("/api/orders", request, JsonOptions);
+        response.EnsureSuccessStatusCode();
+        var order = await response.Content.ReadFromJsonAsync<OrderResponse>(JsonOptions);
+
+        Assert.NotNull(order);
+        return order;
     }
 }

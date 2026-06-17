@@ -20,6 +20,8 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
+app.MapGet("/api/orders", async (OrderStore store) => Results.Ok(new OrderListResponse(await store.GetOrdersAsync())));
+
 app.MapPost("/api/orders", async (CreateOrderRequest request, HttpRequest httpRequest, OrderStore store) =>
 {
     if (string.IsNullOrWhiteSpace(request.CustomerId) || request.Items.Count == 0)

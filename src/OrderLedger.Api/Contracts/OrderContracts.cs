@@ -27,6 +27,8 @@ public sealed record OrderItemResponse(
     decimal UnitPrice,
     decimal LineTotal);
 
+public sealed record OrderListResponse(IReadOnlyCollection<OrderResponse> Items);
+
 public sealed record OutboxEvent(
     Guid Id,
     string Type,

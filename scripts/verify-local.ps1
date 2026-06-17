@@ -45,6 +45,7 @@ $order = Invoke-RestMethod "$BaseUrl/api/orders" `
         )
     } | ConvertTo-Json -Depth 10)
 
+$orders = Invoke-RestMethod "$BaseUrl/api/orders"
 $env:DATA_PATH = (Resolve-Path $DataPath).Path
 $workerOutput = & $WorkerPath
 if ($LASTEXITCODE -ne 0) {
@@ -57,6 +58,7 @@ $ledger = Invoke-RestMethod "$BaseUrl/api/orders/$($order.id)/ledger"
 [PSCustomObject]@{
     Health = "OK"
     OrderId = $order.id
+    ListContainsCreatedOrder = [bool]($orders.items | Where-Object { $_.id -eq $order.id })
     OrderStatus = $updated.status
     LedgerEntryCount = $ledger.entries.Count
     WorkerOutput = ($workerOutput | Out-String).Trim()

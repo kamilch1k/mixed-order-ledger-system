@@ -58,6 +58,7 @@ The verifier creates a fictional order, runs the worker once, and confirms the A
 
 ```text
 GET  /health
+GET  /api/orders
 POST /api/orders
 GET  /api/orders/{id}
 GET  /api/orders/{id}/ledger

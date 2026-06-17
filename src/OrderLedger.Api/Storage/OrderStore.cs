@@ -90,6 +90,22 @@ public sealed class OrderStore
         return await JsonSerializer.DeserializeAsync<OrderResponse>(stream, _jsonOptions);
     }
 
+    public async Task<IReadOnlyCollection<OrderResponse>> GetOrdersAsync()
+    {
+        var orders = new List<OrderResponse>();
+        foreach (var path in Directory.GetFiles(_options.OrdersPath, "*.json"))
+        {
+            await using var stream = File.OpenRead(path);
+            var order = await JsonSerializer.DeserializeAsync<OrderResponse>(stream, _jsonOptions);
+            if (order is not null)
+            {
+                orders.Add(order);
+            }
+        }
+
+        return orders.OrderByDescending(order => order.CreatedAtUtc).ToList();
+    }
+
     public async Task<IReadOnlyCollection<LedgerEntry>> GetLedgerEntriesAsync(Guid orderId)
     {
         var pattern = $"{orderId:N}-*.json";

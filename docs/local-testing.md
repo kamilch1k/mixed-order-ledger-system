@@ -26,8 +26,15 @@ Expected result:
 
 ```text
 Health: OK
+ListContainsCreatedOrder: True
 OrderStatus: Completed
 LedgerEntryCount: 2
+```
+
+List orders manually:
+
+```powershell
+Invoke-RestMethod http://localhost:5207/api/orders
 ```
 
 ## Reset Local Data
