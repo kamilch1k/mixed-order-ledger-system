@@ -1,7 +1,7 @@
 param(
     [string]$BaseUrl = "http://localhost:5207",
     [string]$WorkerPath = ".\worker\bin\ledger-worker.exe",
-    [string]$DataPath = ".\data"
+    [string]$DataPath = ".\src\OrderLedger.Api\data"
 )
 
 $ErrorActionPreference = "Stop"

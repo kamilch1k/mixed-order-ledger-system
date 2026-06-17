@@ -176,9 +176,16 @@ func writeJSON[T any](path string, value T) error {
 func newID() string {
 	var bytes [16]byte
 	if _, err := rand.Read(bytes[:]); err != nil {
-		return normalizeID(fmt.Sprintf("%d", time.Now().UnixNano()))
+		return fmt.Sprintf("00000000-0000-0000-0000-%012d", time.Now().UnixNano()%1_000_000_000_000)
 	}
-	return hex.EncodeToString(bytes[:])
+	encoded := hex.EncodeToString(bytes[:])
+	return fmt.Sprintf(
+		"%s-%s-%s-%s-%s",
+		encoded[0:8],
+		encoded[8:12],
+		encoded[12:16],
+		encoded[16:20],
+		encoded[20:32])
 }
 
 func normalizeID(id string) string {

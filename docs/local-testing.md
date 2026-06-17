@@ -35,5 +35,5 @@ LedgerEntryCount: 2
 Stop the API and delete the local data folder:
 
 ```powershell
-Remove-Item .\data -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item .\src\OrderLedger.Api\data -Recurse -Force -ErrorAction SilentlyContinue
 ```

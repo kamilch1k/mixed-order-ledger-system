@@ -483,4 +483,5 @@ $RECYCLE.BIN/
 
 # Local runtime data
 data/
+src/OrderLedger.Api/data/
 worker/bin/
