@@ -1,5 +1,7 @@
 # Mixed Order Ledger System
 
+[![CI](https://github.com/kamilch1k/mixed-order-ledger-system/actions/workflows/ci.yml/badge.svg)](https://github.com/kamilch1k/mixed-order-ledger-system/actions/workflows/ci.yml)
+
 A mixed-language backend portfolio project: an ASP.NET Core API accepts orders and writes durable outbox events, while a Go worker consumes those events, completes orders, and writes ledger entries.
 
 The system demonstrates event-driven backend design without requiring Docker, Kafka, RabbitMQ, or cloud services. It uses file-backed JSON storage so the full flow can run locally and be inspected easily.
